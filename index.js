@@ -1,1 +1,3 @@
-console.log('Hello world');
+'use strict'
+
+const config = require('config')

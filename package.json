@@ -8,9 +8,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Thanh Nguyen <tienthanh8490@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "eslint": "^5.0.1",
-    "eslint-config-google": "^0.9.1"
-  }
+  "license": "MIT"
 }
