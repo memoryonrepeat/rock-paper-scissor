@@ -1,3 +1,5 @@
 'use strict'
 
-const config = require('config')
+let game = require('./lib/game')
+
+game.start()
