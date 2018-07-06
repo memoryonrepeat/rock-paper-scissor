@@ -2,10 +2,10 @@ const expect = require('chai').expect
 const HumanPlayer = require('../lib/player').HumanPlayer
 const ComputerPlayer = require('../lib/player').ComputerPlayer
 const Player = require('../lib/player').Player
-const stdin = require('mock-stdin').stdin()
 let Game = require('../lib/game')
 
 let human = new HumanPlayer('test_human')
+let human2 = new HumanPlayer('test_human2')
 let computer1 = new ComputerPlayer()
 let game = new Game()
 
@@ -34,8 +34,59 @@ describe('Player', () => {
 
 describe('Game', () => {
   describe('#constructor()', () => {
-    it('game should be an instance of Game ', () => {
+    it('game should be an instance of Game', () => {
       expect(game).to.be.an.instanceof(Game)
+    })
+  })
+  describe('#start()', () => {
+    afterEach(() => {
+      game.reset()
+    })
+    it('game should initiate players', (done) => {
+      game.start()
+      game.rl.on('close', () => {
+        expect(game.human).to.be.an.instanceof(HumanPlayer)
+        expect(game.computer).to.be.an.instanceof(ComputerPlayer)
+        expect(game.computer2).to.be.an.instanceof(ComputerPlayer)
+        done()
+      })
+      game.rl.write('thanh\n')
+      game.rl.write('0\n')
+      game.rl.write('1\n')
+      game.rl.write('2\n')
+      game.rl.write('0\n')
+      game.rl.write('1\n')
+      game.rl.write('2\n')
+      game.rl.write('invalid\n')
+      game.rl.write('computer\n')
+      game.rl.write('computer\n')
+      game.rl.write('computer\n')
+      game.rl.write('computer\n')
+      game.rl.write('computer\n')
+      game.rl.write('computer\n')
+      game.rl.write('stop\n')
+    })
+  })
+  describe('#judge()', () => {
+    it('game should be judged correctly', () => {
+      human.resetScore()
+      human2.resetScore()
+      human.makeMove(0)
+      human2.makeMove(1)
+      game.judge(human, human2)
+      expect(human.score).to.be.lessThan(human2.score)
+      human.makeMove(2)
+      human2.makeMove(1)
+      game.judge(human, human2)
+      expect(human.score).to.be.equal(human2.score)
+      human.makeMove(1)
+      human2.makeMove(1)
+      game.judge(human, human2)
+      expect(human.score).to.be.equal(human2.score)
+      human.makeMove(1)
+      human2.makeMove(2)
+      game.judge(human, human2)
+      expect(human.score).to.be.lessThan(human2.score)
     })
   })
 })
