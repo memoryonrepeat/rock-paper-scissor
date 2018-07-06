@@ -2,6 +2,8 @@ const expect = require('chai').expect
 const HumanPlayer = require('../lib/player').HumanPlayer
 const ComputerPlayer = require('../lib/player').ComputerPlayer
 const Player = require('../lib/player').Player
+const stdin = require('mock-stdin').stdin()
+let Game = require('../lib/game')
 
 let human = new HumanPlayer('test_human')
 let computer1 = new ComputerPlayer()
@@ -26,11 +28,5 @@ describe('Player', () => {
       expect(computer1.name).to.be.a('string')
       expect(computer1.score).to.be.equal(0)
     })
-  })
-})
-
-describe('Game', () => {
-  describe('#constructor()', () => {
-
   })
 })
