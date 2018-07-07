@@ -33,15 +33,15 @@ describe('Player', () => {
 })
 
 describe('Game', () => {
+  beforeEach(() => {
+    game.reset()
+  })
   describe('#constructor()', () => {
     it('game should be an instance of Game', () => {
       expect(game).to.be.an.instanceof(Game)
     })
   })
   describe('#start()', () => {
-    afterEach(() => {
-      game.reset()
-    })
     it('game should initiate players', (done) => {
       game.start()
       game.rl.on('close', () => {
