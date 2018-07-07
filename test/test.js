@@ -2,6 +2,7 @@ const expect = require('chai').expect
 const HumanPlayer = require('../lib/player').HumanPlayer
 const ComputerPlayer = require('../lib/player').ComputerPlayer
 const Player = require('../lib/player').Player
+const config = require('../lib/config')
 let Game = require('../lib/game')
 
 let human = new HumanPlayer('test_human')
@@ -50,7 +51,7 @@ describe('Game', () => {
         expect(game.computer2).to.be.an.instanceof(ComputerPlayer)
         done()
       })
-      game.rl.write('thanh\n')
+      game.rl.write('alphago\n')
       game.rl.write('r\n')
       game.rl.write('   p\n')
       game.rl.write('s   \n')
@@ -85,6 +86,32 @@ describe('Game', () => {
       human2.makeMove(2)
       game.judge(human, human2)
       expect(human.score).to.be.lessThan(human2.score)
+    })
+  })
+  describe('#validateWeapons()', () => {
+    it('weapons should be validated correctly', (done) => {
+      expect(game.validateWeapons()).to.be.equal(true)
+      config.weapons[2].wins = [0]
+      game.start()
+      expect(game.validateWeapons()).to.be.equal(false)
+      config.weapons[2].wins = []
+      config.weapons[1].wins = []
+      config.weapons[0].wins = []
+      game.start()
+      game.rl.on('close', () => {
+        expect(game.human.score).to.be.an.equal(0)
+        expect(game.computer.score).to.be.equal(0)
+        config.weapons[2].wins = [1]
+        config.weapons[1].wins = [0]
+        config.weapons[0].wins = [2]
+        expect(game.validateWeapons()).to.be.equal(true)
+        done()
+      })
+      game.rl.write('alphago\n')
+      game.rl.write('r\n')
+      game.rl.write('p\n')
+      game.rl.write('s\n')
+      game.rl.write('q\n')
     })
   })
 })
